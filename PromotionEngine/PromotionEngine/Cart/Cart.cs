@@ -33,9 +33,16 @@ namespace PromotionEngine.Items
             Items.Add(new CartItem { Item = item, FinalPrice = item.UnitPrice, PromotionApplied = false });
         }
 
-        public void RemoveItem(int skuItemId)
+        public void RemoveItem(string  skuItemId)
         {
+                        if (!IsValidSKU(skuItemId)) throw new ArgumentException("Item not found on cart!");
+
             Items.Remove(Items.FirstOrDefault(t => skuItemId.Equals(t.Item.ID)));
+        }
+
+        private bool IsValidSKU(string sku)
+        {
+            return Items.Any(i => sku.Equals(i.Item.ID));
         }
 
 
