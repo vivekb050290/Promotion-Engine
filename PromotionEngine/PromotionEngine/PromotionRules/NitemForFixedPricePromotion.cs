@@ -1,9 +1,6 @@
 ﻿using PromotionEngine.Items;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PromotionEngine.PromotionRules
 {
@@ -42,6 +39,10 @@ namespace PromotionEngine.PromotionRules
             return cart.Items
                 .Where(i => !i.PromotionApplied && SKU.Equals(i.Item.ID))
                 .Count() >= NumberOfItems;
+        }
+		public override string ToString()
+        {
+            return $"{NumberOfItems} of {SKU}'s for {FixedPrice}";
         }
     }
 }

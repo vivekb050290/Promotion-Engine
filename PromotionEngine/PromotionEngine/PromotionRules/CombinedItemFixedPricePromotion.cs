@@ -1,9 +1,8 @@
 ﻿using PromotionEngine.Items;
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PromotionEngine.PromotionRules
 {
@@ -45,6 +44,10 @@ namespace PromotionEngine.PromotionRules
                 applicable &= cartItemsWithoutPromotion.Any(i => sku.Equals(i.Item.ID));
             }
             return applicable;
+        }
+		   public override string ToString()
+        {
+            return $"{string.Join(" & ", SKUs)} for {FixedPrice}";
         }
     }
 }
