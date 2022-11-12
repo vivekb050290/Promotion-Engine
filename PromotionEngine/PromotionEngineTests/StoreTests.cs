@@ -23,7 +23,7 @@ namespace PromotionEngineTests
         }
 
         [Test]
-        public void CreateStore()
+        public void Store_with_items_added_to_cart_after_checkout_should_apply_promotions()
         {
             store.AddItemToCart("A")
                 .AddItemToCart("A")
