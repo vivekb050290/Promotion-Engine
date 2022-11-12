@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace PromotionEngine.Store
 {
-    public class Store
     public class Store : IStore
     {
         public Cart Cart { get; private set; }
@@ -35,8 +34,11 @@ namespace PromotionEngine.Store
             if ( promotion != null ) Promotions.Add(promotion);
             return this;
         }
+
         public Store AddItemToCart(string itemSKU)
         {
+            if (!IsValidSKU(itemSKU)) throw new ArgumentException("SKU not found!");
+
             if ( !string.IsNullOrWhiteSpace(itemSKU) ) Cart.AddItem(Items.First(i => itemSKU.Equals(i.ID)));
             return this;
         }
@@ -50,14 +52,15 @@ namespace PromotionEngine.Store
             Promotions.ForEach(p => { if (p.IsApplicable(Cart)) p.Execute(Cart); });
             return this;
         }
-
         public List<SKUitem> GetSKUitems()
         {
             return Items;
         }
         public void UpdateSKUitemUnitPrice(string sku, float price)
         {
-			if (!Items.Any(i => sku.Equals(i.ID))) throw new ArgumentException("SKU not found!");
+            if (!Items.Any(i => sku.Equals(i.ID))) throw new ArgumentException("SKU not found!");
+            if (!IsValidSKU(sku)) throw new ArgumentException("SKU not found!");
+
             foreach (var item in Items)
             {
                 if(sku.Equals(item.ID))
@@ -69,7 +72,13 @@ namespace PromotionEngine.Store
 
         public void DeleteSKUitem(string sku)
         {
+            if (!IsValidSKU(sku)) throw new ArgumentException("SKU not found!");
+
             Items.RemoveAt(Items.FindIndex(i => sku.Equals(i.ID)));
+        }
+
+        private bool IsValidSKU(string sku) {
+            return Items.Any(i => sku.Equals(i.ID));
         }
     }
 }
